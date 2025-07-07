@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Dossier d'inscription – Centre de formation</title>
+  <link rel="stylesheet" href="form.css">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+  <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=1, user-scalable=no">
+  <script src="form.js"></script>
+</head>
+
+<body>
+  <div class="container">
+    <h1>Créez votre dossier d'inscription</h1>
+    <p class="intro">Vos données sont traitées conformément aux Règlements générals sur la protection des données. Elles
+      sont conservées 12 mois maximum et ne sont
+      jamais partagées sans votre accord.</p>
+
+    <form id="formulaire" action="upload_drive.php" method="post" enctype="multipart/form-data">
+
+      <fieldset>
+        <legend>Informations personnelles</legend>
+
+        <label>Nom d'usage :
+          <input type="text" name="nom_usage" required
+            oninvalid="this.setCustomValidity('Veuillez renseigner votre nom d\'usage')"
+            oninput="this.setCustomValidity('')">
+        </label>
+
+        <label>Prénom :
+          <input type="text" name="prenom" required
+            oninvalid="this.setCustomValidity('Veuillez renseigner votre prénom')" oninput="this.setCustomValidity('')">
+        </label>
+
+        <label>Nom de jeune fille :
+          <input type="text" name="nom_jeune_fille">
+        </label>
+
+
+        <label>Email :
+          <input type="email" name="email" placeholder="Ex: exemple@gmail.com" required
+            oninvalid="this.setCustomValidity('Veuillez entrer une adresse email valide')"
+            oninput="this.setCustomValidity('')">
+        </label>
+
+        <label>Téléphone :
+          <input type="tel" id="tel" name="tel" placeholder="Ex: 07 51 33 80 58" maxlength="14"
+            oninvalid="this.setCustomValidity('Veuillez indiquer un numéro de téléphone')"
+            oninput="this.setCustomValidity('')">
+        </label>
+
+        <label>Adresse postale :
+          <input id="adresse_postale" type="text" name="adresse" autocomplete="off"
+            placeholder="Ex: chemin du moulin fort" required
+            oninvalid="this.setCustomValidity('Veuillez préciser votre adresse postale')"
+            oninput="this.setCustomValidity('')">
+        </label>
+
+        <label>Code postal :
+          <input id="code_postal" type="text" name="code_postal" placeholder="Ex: 13730" autocomplete="off" required>
+        </label>
+
+        <label>Ville :
+          <input id="ville" type="text" name="ville" autocomplete="off" placeholder="Ex: Marseille" required>
+        </label>
+
+        <label>Date de naissance :
+          <input type="date" name="date_naissance" required
+            oninvalid="this.setCustomValidity('Veuillez indiquer votre date de naissance')"
+            oninput="this.setCustomValidity('')">
+        </label>
+
+        <!-- Champ visible pour l'utilisateur -->
+        <label>Lieu de naissance (Code postal et ville) :
+          <input name="lieu_de_naissance" id="lieu_naissance_complet" type="text" placeholder="Ex: 13001 Marseille"
+            required autocomplete="off">
+        </label>
+
+        <!-- Champs cachés pour le formulaire -->
+        <input type="hidden" name="lieu_naissance_cp" id="lieu_naissance_cp">
+        <input type="hidden" name="lieu_naissance_ville" id="lieu_naissance_ville">
+
+
+        <label>Situation familiale :
+          <select id="situation-familiale" name="situation_familiale" required>
+            <option value="célibataire">Célibataire</option>
+            <option value="marié(e)">Marié(e)</option>
+            <option value="concubin(e)">En concubinage</option>
+            <option value="séparé(e)">Séparé(e)</option>
+            <option value="divorcé(e)">Divorcé(e)</option>
+            <option value="veuf(ve)">Veuf / Veuve</option>
+          </select>
+        </label>
+
+
+        <label for="secu">N° de Sécurité Sociale :
+          <input type="text" id="secu" name="secu" inputmode="numeric" pattern="^[0-9 ]{13,21}$" maxlength="21"
+            placeholder="Ex : 1 84 12 75 123 456 89" required>
+        </label>
+
+
+        <label>N° MSA (le cas échéant) :
+          <input placeholder="Ex : 03 20 900 500" type="text" id="msa" name="msa" maxlength="13" inputmode="numeric"
+            pattern="^[0-9 ]{11,13}$">
+        </label>
+
+
+
+        <label id="nationalite-label">Nationalité : <br>
+          <select id="nationalite" name="nationalite" required
+            oninvalid="this.setCustomValidity('Veuillez indiquer votre nationalité')"
+            oninput="this.setCustomValidity('')"></select>
+        </label>
+
+      </fieldset>
+
+      <fieldset>
+        <legend>Formation souhaitée</legend>
+        <label for="formation">Choisissez la formation qui vous intéresse :</label>
+        <select name="formation" id="formation" required>
+          <option value="" disabled selected>Sélectionnez une formation</option>
+        </select>
+      </fieldset>
+
+      <fieldset>
+        <legend>Financement</legend>
+        <label><input type="checkbox" name="financement[]" value="individuel"> Financement individuel</label>
+        <label><input type="checkbox" name="financement[]" value="compte personnel de formation"> Compte Personnel de
+          Formation (CPF)</label>
+        <label><input type="checkbox" name="financement[]" value="france travail"> France Travail</label>
+        <!--
+            <label><input type="checkbox" name="financement[]" value="cap emploi"> Cap emploi</label>
+            -->
+
+        <label><input type="checkbox" name="financement[]" value="financement teste">Financement teste</label>
+        <label><input type="checkbox" name="financement[]" value="transition professionnelle"> Transition
+          Professionnelle</label>
+        <div>
+          <label><input type="checkbox" name="financement[]" value="region" id="financement-region"> Financement
+            Région</label>
+          <div id="validation-region" style="display:none; margin-top: 10px;">
+            <p>validé par :</p>
+            <label><input type="radio" name="validation" value="maison locale" checked> Mission Locale (-26 ans)</label>
+            <label><input type="radio" name="validation" value="france travail"> France Travail (+26 ans)</label>
+          </div>
+        </div>
+
+        <div>
+          <label><input id="autre-finance" type="checkbox" name="opt-financement-autre"
+              value="autre-finance">Autre</label>
+          <div id="autreFinancement-wrapper" style="display: none;">
+            <input type="text" id="input-financement-autre" name="financement[]" placeholder="Veuillez préciser..">
+          </div>
+        </div>
+
+        <label><input type="checkbox" name="financement[]" value="auto-financement"> Auto financement</label>
+
+
+      </fieldset>
+
+      <fieldset>
+        <legend>Situation professionnelle</legend>
+        <label>Niveau d'études :
+          <select id="niveau_etude" name="niveau_etude" required>
+            <option value="" disabled selected>Sélectionnez un niveau d'étude</option>
+            <option value="Aucun">Aucun</option>
+            <option value="CAP/BEP">Niveau 3 (CAP/BEP)</option>
+            <option value="BAC/DAEU">Niveau 4 (BAC/DAEU)</option>
+            <option value="BTS/DUT">Niveau 5 (BTS/DUT)</option>
+            <option value="Licence/Master">Niveau 6 et + (Licence, Master...)</option>
+          </select>
+        </label>
+
+        <label>Date de fin de scolarité :
+          <input type="date" name="date_fin_scolarite">
+        </label>
+
+        <label>Diplôme obtenu :
+          <input type="text" name="diplome_obtenu">
+        </label>
+
+        <label>
+          Numéro d'identifiant France Travail :
+          <input type="text" id="id-france-travail" name="identifiant_france_travail" placeholder="Ex : 001 45 698 721"
+            maxlength="14" inputmode="numeric">
+        </label>
+
+
+        <label>
+          <input type="checkbox" name="situation[]" value="Salarié"> Vous êtes salarié
+        </label>
+
+        <label>
+          <input type="checkbox" name="situation[]" value="Demandeur d'emploi"> Vous êtes demandeur d'emploi
+        </label>
+
+        <label>
+          <input type="checkbox" name="rqth" value="oui"> Reconnu(e) travailleur handicapé (RQTH)
+        </label>
+
+        <div>
+          <label>
+            <input type="checkbox" id="fr-travail" name="france-travail">
+            Êtes-vous inscrit à France Travail ?
+          </label>
+
+          <div id="date-inscription" style="display: none; margin-left: 20px;">
+            <label>
+              Date d’inscription :
+              <input type="date" name="date_inscription_france_travail">
+            </label>
+          </div>
+        </div>
+
+        <div>
+          <label>
+            <input type="checkbox" id="indemnites" name="indemnites">
+            Percevez-vous des indemnités ?
+          </label>
+
+          <div id="type-indem" style="display: none; margin-left: 20px;">
+            <label><input type="checkbox" name="type_indem[]" value="ARE"> ARE</label>
+            <label><input type="checkbox" name="type_indem[]" value="RSA"> RSA</label>
+            <label><input type="checkbox" name="type_indem[]" value="Bidule"> Bidule</label>
+            <label><input type="checkbox" name="opt-autre-indemnite" id="autre-indem" value="autre-indem">
+              Autres</label>
+
+            <div id="autreIndem-wrapper" style="display: none;">
+              <input type="text" id="input-indem-autres" name="type_indem[]" placeholder="Veuillez préciser..">
+            </div>
+          </div>
+        </div>
+
+      </fieldset>
+
+      <fieldset>
+        <legend>Fichiers à joindre</legend>
+
+        <!--CV-->
+        <div class="file-upload">
+          <label for="cv">Votre CV <span class="obligatoire">*</span> :</label>
+          <label class="custom-file-label"><i class="fa-solid fa-file"></i> Choisir un fichier
+            <input type="file" id="cv" name="cv" accept="application/pdf,image/*" style="opacity: 0;" required>
+          </label>
+          <span class="file-name" id="cv-name">Aucun fichier sélectionné</span>
+        </div>
+
+
+        <!--Sécu-->
+        <div class="file-upload">
+          <label for="secu_file">Copie de l'attestation <b>Sécurité sociale</b> (pas copie carte vitale) <span
+              class="obligatoire">*</span> :</label>
+          <label class="custom-file-label"><i class="fa-solid fa-file"></i> Choisir un fichier
+            <input type="file" id="secu_file" name="secu_file" accept="application/pdf,image/*" style="opacity: 0;"
+              required>
+          </label>
+          <span class="file-name" id="secu_file-name">Aucun fichier sélectionné</span>
+        </div>
+
+        <!--Diplomes-->
+        <div class="file-upload">
+          <label for="diplomes">Copie de vos <b>diplômes</b> et/ou <b>relevés de notes</b> <span
+              class="obligatoire">*</span> :</label>
+          <label class="custom-file-label"><i class="fa-solid fa-file"></i> Choisir un fichier
+            <input type="file" id="diplomes" name="diplomes" accept="application/pdf,image/*" style="opacity: 0;"
+              required>
+          </label>
+          <span class="file-name" id="diplomes-name">Aucun fichier sélectionné</span>
+        </div>
+
+        <!--Certificat Medical-->
+
+        <div class="file-upload">
+          <label for="certif"><b>Certificat médical</b> d'aptitude à suivre la formation demandée + <b>vaccination à
+              jour</b> :</label>
+          <label class="custom-file-label"><i class="fa-solid fa-file"></i> Choisir un fichier
+            <input type="file" id="certif" name="certif" accept="application/pdf,image/*" style="opacity: 0;">
+          </label>
+          <span class="file-name" id="certif-name">Aucun fichier sélectionné</span>
+        </div>
+
+
+        <!--obligations militaires-->
+        <div class="file-upload">
+          <label for="militaire">Document relatif à la situation au regard des obligations militaires (candidats entre
+            16 et 25 ans) :</label>
+          <label class="custom-file-label"><i class="fa-solid fa-file"></i> Choisir un fichier
+            <input type="file" id="militaire" name="militaire" accept="application/pdf,image/*" style="opacity: 0;">
+          </label>
+          <span class="file-name" id="militaire-name">Aucun fichier sélectionné</span>
+        </div>
+
+        <!--RQTH-->
+        <div class="file-upload">
+          <label for="rqth">Copie de la notification de reconnaissance Travailleur
+            handicapé</label>
+          <label class="custom-file-label"><i class="fa-solid fa-file"></i> Choisir un fichier
+            <input type="file" id="rqth" name="rqth" accept="application/pdf,image/*" style="opacity: 0;">
+          </label>
+          <span class="file-name" id="rqth-name">Aucun fichier sélectionné</span>
+        </div>
+
+        <!--carte ID-->
+        <div class="file-upload">
+          <label for="id-recto">
+            Copie de la <b>carte d'identité</b> (recto-verso) <span class="important">en cours de validité</span> ou de
+            votre
+            <b>passeport</b>.<br>
+            En cas de nationalité étrangère, copie du <b>titre de séjour</b> autorisant le travail <span
+              class="obligatoire">*</span> :
+          </label>
+
+          <label class="custom-file-label">
+            <i class="fa-solid fa-file"></i> Choisir un fichier
+            <input type="file" id="id-recto" name="id_recto" accept="application/pdf,image/*" style="opacity: 0;"
+              required>
+          </label>
+          <span style="margin-bottom: 14px;" class="file-name" id="id-recto-name">Aucun fichier sélectionné</span>
+
+          <label id="label-verso" for="verso-checkbox">
+            <input type="checkbox" id="verso-checkbox"> J’ai le verso dans un fichier séparé
+          </label>
+
+          <label style="display: none;" id="verso-upload" class="custom-file-label">
+            <i class="fa-solid fa-file"></i> Choisir le verso
+            <input type="file" id="id-verso" name="id_verso" accept="application/pdf,image/*" style="opacity: 0;">
+          </label>
+          <span style="display: none;" class="file-name" id="id-verso-name">Aucun fichier sélectionné</span>
+        </div>
+
+
+      </fieldset>
+
+
+      <fieldset id="rgpd">
+        <legend>Consentement RGPD <span class="obligatoire">*</span></legend>
+        <div>
+          Les informations recueillies à partir de ce formulaire font l’objet d’un traitement informatique par le CFPPA.
+          Elles sont utilisées pour l’enregistrement, le suivi administratif des candidats et des stagiaires, ainsi que
+          pour toute communication liée à votre dossier.
+          Certaines données peuvent être transmises, dans le respect des obligations légales, aux services académiques,
+          à la Région et aux partenaires institutionnels concernés.
+          Conformément au Règlement Général sur la Protection des Données (RGPD - article 6), vous êtes informé(e) que
+          ce traitement est nécessaire à la gestion de votre demande.
+          Pour toute question relative à vos données personnelles ou pour exercer vos droits (accès, rectification,
+          suppression…), vous pouvez contacter le CFPPA.
+        </div>
+        <label><input type="checkbox" name="consentement" required
+            oninvalid="this.setCustomValidity('Vous devez accepter les conditions pour continuer')"
+            oninput="this.setCustomValidity('')">
+          <p>Je consens au traitement de mes données personnelles dans le cadre de cette inscription, conformément au
+            RGPD.</p>
+        </label>
+      </fieldset>
+      <div id="submit">
+        <button type="submit">Envoyer le dossier</button>
+      </div>
+    </form>
+
+    <!--Loading popup-->
+    <div id="loading-overlay">
+      <div class="loader-content">
+        <div class="spinner"></div>
+        <p><strong>Traitement en cours, merci de patienter…</strong></p>
+        <p style="margin-top: 10px; font-size: 0.9em;">Cette opération peut prendre entre <strong>20 et 60
+            secondes</strong>.</p>
+      </div>
+    </div>
+
+    <!--offline popup-->
+    <div id="offline-message" style="display: none;">
+      <div class="offline-box">
+        <i class="fa-solid fa-plug-circle-xmark"></i>
+        <p>Vous n’avez aucun accès à Internet.<br>Veuillez réessayer plus tard.</p>
+      </div>
+    </div>
+
+
+  </div>
+
+</body>
+
+</html>

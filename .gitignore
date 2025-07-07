@@ -1,0 +1,32 @@
+# Secrets (ne jamais versionner)
+.env
+service_account.json
+credentials.json
+.history/
+
+# Dépendances PHP
+/vendor/
+composer.lock
+
+# Fichiers temporaires ou inutiles
+*.log
+*.cache
+
+# Fichiers système / IDE
+.vscode/
+.idea/
+*.DS_Store
+Thumbs.db
+
+
+
+
+
+
+
+
+
+service_account.json
+credentials.json
+.history/
+.env
