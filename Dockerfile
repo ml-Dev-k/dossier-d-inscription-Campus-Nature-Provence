@@ -8,7 +8,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libxml2-dev \
     unzip \
     zip \
-    && docker-php-ext-install zip xml mbstring \
+    && docker-php-ext-install zip xml mbstring gd \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
