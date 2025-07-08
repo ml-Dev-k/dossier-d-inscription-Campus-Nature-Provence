@@ -132,11 +132,7 @@
         <label><input type="checkbox" name="financement[]" value="compte personnel de formation"> Compte Personnel de
           Formation (CPF)</label>
         <label><input type="checkbox" name="financement[]" value="france travail"> France Travail</label>
-        <!--
-            <label><input type="checkbox" name="financement[]" value="cap emploi"> Cap emploi</label>
-            -->
-
-        <label><input type="checkbox" name="financement[]" value="financement teste">Financement teste</label>
+        <label><input type="checkbox" name="financement[]" value="cap emploi"> Cap emploi</label>
         <label><input type="checkbox" name="financement[]" value="transition professionnelle"> Transition
           Professionnelle</label>
         <div>
@@ -146,6 +142,10 @@
             <p>validé par :</p>
             <label><input type="radio" name="validation" value="maison locale" checked> Mission Locale (-26 ans)</label>
             <label><input type="radio" name="validation" value="france travail"> France Travail (+26 ans)</label>
+            <label><input id="autre-validation" type="radio" name="validation" value="autre-validation"> Autre</label>
+            <div id="autreValidation-wrapper" style="display: none;">
+              <input type="text" id="input-validation-autres" name="validation[]" placeholder="Veuillez préciser..">
+            </div>
           </div>
         </div>
 
@@ -156,9 +156,6 @@
             <input type="text" id="input-financement-autre" name="financement[]" placeholder="Veuillez préciser..">
           </div>
         </div>
-
-        <label><input type="checkbox" name="financement[]" value="auto-financement"> Auto financement</label>
-
 
       </fieldset>
 
@@ -225,7 +222,6 @@
           <div id="type-indem" style="display: none; margin-left: 20px;">
             <label><input type="checkbox" name="type_indem[]" value="ARE"> ARE</label>
             <label><input type="checkbox" name="type_indem[]" value="RSA"> RSA</label>
-            <label><input type="checkbox" name="type_indem[]" value="Bidule"> Bidule</label>
             <label><input type="checkbox" name="opt-autre-indemnite" id="autre-indem" value="autre-indem">
               Autres</label>
 

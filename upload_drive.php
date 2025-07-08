@@ -53,7 +53,6 @@ $rootFolderName = $_ENV['GOOGLE_DRIVE_ROOT_NAME'];
 $groupesFormations = [
     "✔ Métiers du Paysage" => [
         "BTS Aménagements Paysagers",
-        "Formation bidule",
         "BP Aménagements Paysagers",
         "BPAOSP - Brevet Professionnel Agricole (BPA) Ouvrier Spécialisé du Paysage",
         "Bac Professionnel - Aménagements Paysagers",
@@ -207,8 +206,8 @@ try {
     $sheet = $spreadsheet->getActiveSheet();
     $sheet->setTitle("Dossier utilisateur");
 
-    $financementStandards = ['individuel', 'compte personnel de formation', 'auto-financement', 'cap emploi', 'financement teste', 'france travail', 'transition professionnelle', 'region', ''];
-    $indemniteStandards = ['ARE', 'RSA', 'Bidule', ''];
+    $financementStandards = ['individuel', 'compte personnel de formation', 'cap emploi', 'france travail', 'transition professionnelle', 'region', ''];
+    $indemniteStandards = ['ARE', 'RSA', ''];
 
     // Transforme tout le tableau en minuscules une seule fois
     $financementStandardsLower = array_map('strtolower', $financementStandards);

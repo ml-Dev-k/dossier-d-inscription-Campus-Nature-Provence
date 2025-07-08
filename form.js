@@ -160,158 +160,182 @@ $(document).ready(function () {
     }
   });
 
-  $.get('https://restcountries.com/v3.1/all?fields=name,translations', function (data) {
-    const select = $('#nationalite');
-    select.append(`<option value="France">France</option>`);
-    const autresPays = data
-      .filter(c => c.translations && c.translations.fra && c.translations.fra.common !== "France")
-      .sort((a, b) => a.translations.fra.common.localeCompare(b.translations.fra.common, 'fr'));
+  $('input[name="validation"]').on('change', function () {
+    const isAutre = $('#autre-validation').is(':checked');
+    const wrapper = $('#autreValidation-wrapper');
+    const champTexte = $('#input-validation-autres');
 
-    autresPays.forEach(country => {
-      const nom = country.translations.fra.common;
-      select.append(`<option value="${nom}">${nom}</option>`);
-    });
-  });
-
-  $(function () {
-    $("#adresse_postale").autocomplete({
-      source: function (request, response) {
-        $.get("https://api-adresse.data.gouv.fr/search/", {
-          q: request.term,
-          limit: 5
-        }, function (data) {
-          response($.map(data.features, function (feature) {
-            return {
-              label: feature.properties.label,
-              value: feature.properties.label,
-              city: feature.properties.city,
-              postcode: feature.properties.postcode
-            };
-          }));
-        });
-      },
-      select: function (event, ui) {
-        $('#code_postal').val(ui.item.postcode);
-        $('#ville').val(ui.item.city);
-      },
-      minLength: 3
-    });
-  });
-
-  $(function () {
-    $("#lieu_naissance_complet").autocomplete({
-      source: function (request, response) {
-        $.get("https://api-adresse.data.gouv.fr/search/", {
-          q: request.term,
-          type: "municipality",
-          limit: 10
-        }, function (data) {
-          response($.map(data.features, function (feature) {
-            return {
-              label: feature.properties.postcode + ' ' + feature.properties.city,
-              value: feature.properties.postcode + ' ' + feature.properties.city,
-              city: feature.properties.city,
-              postcode: feature.properties.postcode
-            };
-          }));
-        });
-      },
-      select: function (event, ui) {
-        $('#lieu_naissance_cp').val(ui.item.postcode);
-        $('#lieu_naissance_ville').val(ui.item.city);
-      },
-      minLength: 2
-    });
-  });
-
-  $('#verso-checkbox').on('change', function () {
-    const checked = $(this).is(':checked');
-
-    $('#verso-upload').toggle(checked);
-    $('#id-verso').prop('required', checked);
-    if (!checked) {
-      $('#id-verso').val('');
-      $('#id-verso-name').text('Aucun fichier sélectionné');
-      $('#id-verso-name').toggle(checked);
-    }
-  });
-
-
-  $('form').on('submit', function (e) {
-    if (!navigator.onLine) {
-      e.preventDefault();
-      $('form').on('submit', function (e) {
-        if (!navigator.onLine) {
-          e.preventDefault(); // Stoppe le formulaire
-          $('#offline-message').fadeIn();
-        }
+    if (isAutre) {
+      wrapper.show();
+      champTexte.prop('required', true);
+      champTexte[0].setCustomValidity('');
+      champTexte.on('invalid', function () {
+        this.setCustomValidity('Veuillez préciser qui a validé le financement');
       });
-      $('#offline-message').on('click', function (e) {
-        if (!$(e.target).closest('.offline-box').length) {
-          $('#offline-message').fadeOut();
-        }
+      champTexte.on('input', function () {
+        this.setCustomValidity('');
       });
     } else {
-      $('#loading-overlay').fadeIn();
+      wrapper.hide();
+      champTexte.val('');
+      champTexte.prop('required', false);
+      champTexte[0].setCustomValidity('');
+      champTexte.off('invalid');
+      champTexte.off('input');
     }
   });
 
 
 
-  const formations = {
-    "✔ Métiers du Paysage": [
-      "BTS Aménagements Paysagers",
-      "Formation bidule",
-      "BP Aménagements Paysagers",
-      "BPAOSP - Brevet Professionnel Agricole (BPA) Ouvrier Spécialisé du Paysage",
-      "Bac Professionnel - Aménagements Paysagers",
-      "CAPa jardinier paysagiste"
-    ],
-    "✔ Métiers de l'Environnement": [
-      "BTS GPN - BTSA Gestion et Protection de la Nature",
-      "Bachelor GPMM"
-    ],
-    "✔ Métiers du Monde Animal": [
-      "ASV - Auxiliaire Spécialisé Vétérinaire",
-      "CAPA Maréchal Ferrant",
-      "ACACED - Attestation de Connaissances pour les Animaux de Compagnie d’Espèces Domestiques"
-    ],
-    "✔ Métiers de l'Agriculture et de l'Alimentation": [
-      "BP Responsable d'Entreprise Agricole [Apprentissage]",
-      "BP Responsable d'Entreprise Agricole [Formation Continue]",
-      "Brevet de Technicien Supérieur Agricole (BTSa) Viticulture-Oenologie [Apprentissage]"
-    ],
-    "✔ Métiers du Service à la Personne": [
-      "CAPa SAPVER"
-    ],
-    "✔ Formations courtes": [
-      "Certibiocide/Certiphyto",
-      "Formations courtes agriculture",
-      "Hygiène Alimentaire",
-      "Validation des Acquis de l'Expérience (VAE)"
-    ]
-  };
+$.get('https://restcountries.com/v3.1/all?fields=name,translations', function (data) {
+  const select = $('#nationalite');
+  select.append(`<option value="France">France</option>`);
+  const autresPays = data
+    .filter(c => c.translations && c.translations.fra && c.translations.fra.common !== "France")
+    .sort((a, b) => a.translations.fra.common.localeCompare(b.translations.fra.common, 'fr'));
 
-  const horsGroupe = [
-    "VAE"
-  ];
+  autresPays.forEach(country => {
+    const nom = country.translations.fra.common;
+    select.append(`<option value="${nom}">${nom}</option>`);
+  });
+});
+
+$(function () {
+  $("#adresse_postale").autocomplete({
+    source: function (request, response) {
+      $.get("https://api-adresse.data.gouv.fr/search/", {
+        q: request.term,
+        limit: 5
+      }, function (data) {
+        response($.map(data.features, function (feature) {
+          return {
+            label: feature.properties.label,
+            value: feature.properties.label,
+            city: feature.properties.city,
+            postcode: feature.properties.postcode
+          };
+        }));
+      });
+    },
+    select: function (event, ui) {
+      $('#code_postal').val(ui.item.postcode);
+      $('#ville').val(ui.item.city);
+    },
+    minLength: 3
+  });
+});
+
+$(function () {
+  $("#lieu_naissance_complet").autocomplete({
+    source: function (request, response) {
+      $.get("https://api-adresse.data.gouv.fr/search/", {
+        q: request.term,
+        type: "municipality",
+        limit: 10
+      }, function (data) {
+        response($.map(data.features, function (feature) {
+          return {
+            label: feature.properties.postcode + ' ' + feature.properties.city,
+            value: feature.properties.postcode + ' ' + feature.properties.city,
+            city: feature.properties.city,
+            postcode: feature.properties.postcode
+          };
+        }));
+      });
+    },
+    select: function (event, ui) {
+      $('#lieu_naissance_cp').val(ui.item.postcode);
+      $('#lieu_naissance_ville').val(ui.item.city);
+    },
+    minLength: 2
+  });
+});
+
+$('#verso-checkbox').on('change', function () {
+  const checked = $(this).is(':checked');
+
+  $('#verso-upload').toggle(checked);
+  $('#id-verso').prop('required', checked);
+  if (!checked) {
+    $('#id-verso').val('');
+    $('#id-verso-name').text('Aucun fichier sélectionné');
+    $('#id-verso-name').toggle(checked);
+  }
+});
 
 
-  const $select = $('#formation');
-
-  // Ajout des optgroup
-  $.each(formations, function (groupe, liste) {
-    const $optgroup = $('<optgroup>').attr('label', groupe);
-    $.each(liste, function (_, nom) {
-      $optgroup.append($('<option>').val(nom).text(nom));
+$('form').on('submit', function (e) {
+  if (!navigator.onLine) {
+    e.preventDefault();
+    $('form').on('submit', function (e) {
+      if (!navigator.onLine) {
+        e.preventDefault(); // Stoppe le formulaire
+        $('#offline-message').fadeIn();
+      }
     });
-    $select.append($optgroup);
-  });
+    $('#offline-message').on('click', function (e) {
+      if (!$(e.target).closest('.offline-box').length) {
+        $('#offline-message').fadeOut();
+      }
+    });
+  } else {
+    $('#loading-overlay').fadeIn();
+  }
+});
 
-  // Ajout des options hors groupe
-  $.each(horsGroupe, function (_, nom) {
-    $select.append($('<option>').val(nom).text(nom));
+const formations = {
+  "✔ Métiers du Paysage": [
+    "BTS Aménagements Paysagers",
+    "BP Aménagements Paysagers",
+    "BPAOSP - Brevet Professionnel Agricole (BPA) Ouvrier Spécialisé du Paysage",
+    "Bac Professionnel - Aménagements Paysagers",
+    "CAPa jardinier paysagiste"
+  ],
+  "✔ Métiers de l'Environnement": [
+    "BTS GPN - BTSA Gestion et Protection de la Nature",
+    "Bachelor GPMM"
+  ],
+  "✔ Métiers du Monde Animal": [
+    "ASV - Auxiliaire Spécialisé Vétérinaire",
+    "CAPA Maréchal Ferrant",
+    "ACACED - Attestation de Connaissances pour les Animaux de Compagnie d’Espèces Domestiques"
+  ],
+  "✔ Métiers de l'Agriculture et de l'Alimentation": [
+    "BP Responsable d'Entreprise Agricole [Apprentissage]",
+    "BP Responsable d'Entreprise Agricole [Formation Continue]",
+    "Brevet de Technicien Supérieur Agricole (BTSa) Viticulture-Oenologie [Apprentissage]"
+  ],
+  "✔ Métiers du Service à la Personne": [
+    "CAPa SAPVER"
+  ],
+  "✔ Formations courtes": [
+    "Certibiocide/Certiphyto",
+    "Formations courtes agriculture",
+    "Hygiène Alimentaire",
+    "Validation des Acquis de l'Expérience (VAE)"
+  ]
+};
+
+const horsGroupe = [
+  "VAE"
+];
+
+
+const $select = $('#formation');
+
+// Ajout des optgroup
+$.each(formations, function (groupe, liste) {
+  const $optgroup = $('<optgroup>').attr('label', groupe);
+  $.each(liste, function (_, nom) {
+    $optgroup.append($('<option>').val(nom).text(nom));
   });
+  $select.append($optgroup);
+});
+
+// Ajout des options hors groupe
+$.each(horsGroupe, function (_, nom) {
+  $select.append($('<option>').val(nom).text(nom));
+});
 
 
 
