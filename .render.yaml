@@ -1,7 +1,8 @@
 services:
   - type: web
     name: formulaire-cfppa
-    env: docker
+    env: php
     plan: free
-    dockerfilePath: Dockerfile
+    buildCommand: "composer install --no-dev --prefer-dist"
+    startCommand: "apache2-foreground"
     autoDeploy: true
