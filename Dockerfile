@@ -3,14 +3,16 @@ FROM php:8.2-apache
 ENV COMPOSER_MEMORY_LIMIT=-1
 
 RUN apt-get update && apt-get install -y \
+    libonig-dev \
     unzip \
     git \
     libzip-dev \
     zip \
     libxml2-dev \
-    && docker-php-ext-install zip xml mbstring pdo pdo_mysql \
+    && docker-php-ext-install zip xml mbstring \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
+
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
