@@ -13,7 +13,14 @@ function getClient()
     $client = new Google_Client();
     $client->setApplicationName($_ENV['GOOGLE_APP_NAME']);
     $client->setScopes($_ENV['GOOGLE_DRIVE_SCOPE']);
-    $client->setAuthConfig($_ENV['GOOGLE_CREDENTIALS_PATH']);
+    //$client->setAuthConfig($_ENV['GOOGLE_CREDENTIALS_PATH']);
+    $serviceAccountJson = $_ENV['GOOGLE_SERVICE_ACCOUNT_JSON'];
+    if ($serviceAccountJson) {
+        $client->setAuthConfig(json_decode($serviceAccountJson, true));
+    } else {
+        throw new Exception('Service account JSON not found');
+    }
+    
     $client->useApplicationDefaultCredentials();
     return $client;
 }
