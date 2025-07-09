@@ -64,7 +64,6 @@ function popup($type, $customMessage = null)
 {
     $contactEmail = htmlspecialchars($_ENV['CONTACT_EMAIL'] ?? 'contact@example.com');
     $contactPhone = htmlspecialchars($_ENV['CONTACT_PHONE'] ?? '+33 0 00 00 00 00');
-    $retourUrl = htmlspecialchars($_ENV['RETOUR_URL'] ?? '#');
 
     $messages = [
         'success' => "<i class='fa-solid fa-square-check success-icon fa-2x'></i> <p id='msg'>Votre dossier a été envoyé avec succès !</p>",
@@ -101,7 +100,6 @@ function popup($type, $customMessage = null)
     <body id="msg-body">
         <div class="message {$type}-msg">
             <p>{$msg}</p>
-            <a href="{$retourUrl}" class="btn-retour">Poursuivre ma navigation</a>
         </div>
     </body>
     </html>
