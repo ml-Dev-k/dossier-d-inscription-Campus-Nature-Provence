@@ -317,7 +317,7 @@ const formations = {
 };
 
 const horsGroupe = [
-  "VAE"
+  "Autres"
 ];
 
 
